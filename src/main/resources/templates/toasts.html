@@ -11,16 +11,23 @@
 </head>
 
 <body data-bs-theme="dark">
-    <div id="toasts" class="toast-container position-absolute top-0 end-0 p-3" hx-swap-oob="afterbegin"
-         th:fragment="toasts" th:if="${messages}">
+    <div id="toasts" hx-on::load="console.log(this)" th:fragment="toasts"
+         class="toast-container position-absolute top-0 end-0 p-3" hx-swap-oob="afterbegin">
         <div class="toast bg-secondary" role="alert" aria-live="assertive" aria-atomic="true"
              hx-on::load="new bootstrap.Toast(this).show()"
-             th:each="message: ${messages}">
+             th:each="message: ${messages}" th:if="${messages}">
             <div class="toast-body">
                 <span th:text="${message}"></span>
             </div>
         </div>
     </div>
+    <script>
+        addEventListener("DOMContentLoaded", (event) => {
+            document.querySelectorAll('#toasts .toast').forEach(function(toastElement) {
+                new bootstrap.Toast(toastElement).show()
+            });
+        });
+    </script>
 
     <div class="container mt-5">
         <div class="row">
